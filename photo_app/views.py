@@ -1,24 +1,15 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import Photomodel,Commentmodel
+from user_app.models import UserModel
 from .forms import Photoform,Commentform
 # Create your views here.
 def index(request):
     if 'id' in request.session:
-        photos = Photomodel.objects.all()
-        data = []
-        for photo in photos:
-            two_comments = Commentmodel.objects.filter(parent_post=photo)[:2]
-            d = {
-                'photo': photo,
-                'comments': two_comments
-            }
-            data.append(d)
-        context = {
-            'posts': data
-        }
-        return render(request, 'photo_app/index.html', context)
-
+        upload = Photomodel.objects.all()[:10]
+        comments = Commentmodel.objects.all()[:20]
+        return render(request, 'photo_app/index.html',{'upload': upload, 'comments': comments})
+        
 
     else:
         return redirect('user:login')
@@ -59,3 +50,18 @@ def edit(request,id):
         form = Photoform
         return render(request,'photo_app/editphoto.html',{'photo':photo})
  
+def profile(request):
+    if 'id' in request.session:
+        user_id = request.session['id']
+        upload = Photomodel.objects.filter(uploaded_by = user_id)
+        user = UserModel.objects.get(id = user_id)
+        dict = {'upload':upload,'user':user}
+        return render(request, 'photo_app/profile.html',dict)
+
+    else:
+        return redirect('user:login')
+    
+def delete(request,id):
+    photo = Photomodel.objects.get(id=id)
+    photo.delete()
+    return redirect('photo_app:profile')

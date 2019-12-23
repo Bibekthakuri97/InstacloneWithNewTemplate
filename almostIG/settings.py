@@ -25,7 +25,11 @@ SECRET_KEY = '(mekoh4kv4qu(4d-122pt6bl&%%r^iv2p1$(p7#56bi#t$uzn_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'almostig.herokuapp.com',
+    'localhost',
+    '127.0.0.1'
+]
 
 
 # Application definition
@@ -120,5 +124,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
+
+if 'DATABASE_URL' in os.environ: #means heroku 
+    import dj_database_url
+    DATABASES = {'default': dj_database_url.config()}

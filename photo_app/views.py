@@ -65,3 +65,25 @@ def delete(request,id):
     photo = Photomodel.objects.get(id=id)
     photo.delete()
     return redirect('photo_app:profile')
+
+def search(request):
+    if 'id' not in request.session:
+        return redirect('user:login')
+
+    userid = request.session.get('id',None)
+
+    if request.method == 'GET':
+        query = request.GET.get('q',None)
+        
+        if query:
+            print(query)
+            d = {
+                    'profiles': UserModel.objects.filter(username__icontains=query).exclude(id=userid),
+                    'query': query
+
+            }
+            return render(request, 'photo_app/search_result.html',d)
+        else:
+            return redirect('photo_app:index')
+    else:
+            return redirect('photo_app:index')

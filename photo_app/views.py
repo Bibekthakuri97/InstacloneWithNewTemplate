@@ -17,6 +17,11 @@ def index(request):
 
 def add(request):
     if request.method == "POST":
+        # caption = request.POST.get('caption')
+        # photo = request.FILES.get('photo')
+
+        # post = Photomodel()
+        # post.save()
         form = Photoform(request.POST, request.FILES)
         if form.is_valid():
             try:
@@ -29,7 +34,7 @@ def add(request):
             print(form.errors)
             return HttpResponse('Form not valid')
     else:
-        form = Photoform
+        form = Photoform()
         return render(request,'photo_app/addphoto.html',{'form':form})
  
 def edit(request,id):

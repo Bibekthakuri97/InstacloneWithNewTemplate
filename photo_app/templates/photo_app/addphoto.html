@@ -11,9 +11,9 @@
     {% csrf_token %} <!--cross site request forgery wfor security purpose and is mandatory in forms -->
         <!-- {{form.as_p}} -->
         Photo:<input type="file" name="photo" value="photo">
-        Caption:<input type="text" name="caption">
+        Caption:<input type="text" name="capthtmion">
         <input type="hidden" name="likes" value="0">
-        <input type="hidden" name="User" value="{{request.session.id}}">
+        <input type="hidden" name="uploaded_by" value="{{request.session.id}}">
     <input type="submit" value="Upload">
 </form>
 
